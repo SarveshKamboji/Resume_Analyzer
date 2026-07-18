@@ -1,14 +1,16 @@
-import axios from 'axios';
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: '/api',
-  headers: { 'Content-Type': 'application/json' },
+  baseURL: "https://resume-analyzer-912.vercel.app/api",
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 // Attach JWT token to every request
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('ra_token');
+    const token = localStorage.getItem("ra_token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -22,9 +24,9 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('ra_token');
-      localStorage.removeItem('ra_user');
-      window.location.href = '/login';
+      localStorage.removeItem("ra_token");
+      localStorage.removeItem("ra_user");
+      window.location.href = "/login";
     }
     return Promise.reject(error);
   }
